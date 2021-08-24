@@ -1,10 +1,10 @@
-import * as React from "react";
+import * as React from "react"
 import {
   Text,
   View,
   Image,
   Easing,
-  FlatList,
+  ScrollView,
   Animated,
   ViewStyle,
   TextStyle,
@@ -13,12 +13,12 @@ import {
   LayoutAnimation,
   TouchableOpacity,
   TouchableHighlight,
-} from "react-native";
-import Spinner from "react-native-spinkit";
+} from "react-native"
+import Spinner, { SpinnerType } from "react-native-spinkit"
 /**
  * ? Local Imports
  */
-import Icon from "./components/Icon";
+import Icon from "./Icon"
 import styles, {
   _imageStyle,
   _menuBarContainer,
@@ -26,49 +26,49 @@ import styles, {
   _menuItemTextStyle,
   _menuButtonContainer,
   _placeholderTextStyle,
-} from "./RNSingleSelect.style";
-import { ThemeColors, DARK, LIGHT } from "./theme";
+} from "./RNSingleSelect.style"
+import { ThemeColors, DARK, LIGHT } from "./theme"
 
 export interface ISingleSelectDataType {
-  id: number;
-  value: string;
-  imageSource?: any;
-  data?: any;
+  id: number
+  value: string
+  imageSource?: any
+  data?: any
 }
 
 interface IProps {
-  width?: number;
-  height?: number;
-  darkMode?: boolean;
-  imageWidth?: number;
-  TextComponent?: any;
-  imageHeight?: number;
-  placeholder?: string;
-  ImageComponent?: any;
-  spinnerType?: string;
-  spinnerSize?: number;
-  spinnerColor?: string;
-  searchEnabled?: boolean;
-  disableAbsolute?: boolean;
-  placeholderTextStyle?: any;
-  animatedBorderRadius?: number;
-  placeholderTextColor?: string;
-  menuBarContainerWidth?: number;
-  menuBarContainerHeight?: number;
-  disableFilterAnimation?: boolean;
-  value?: string;
-  arrowImageStyle?: ImageStyle;
-  menuItemTextStyle?: TextStyle;
-  buttonContainerStyle?: ViewStyle;
-  menuBarContainerStyle?: ViewStyle;
-  data?: Array<ISingleSelectDataType>;
-  initialValue?: ISingleSelectDataType;
-  onTextChange?: (text: string) => void;
-  onSelect: (selectedItem: ISingleSelectDataType) => void;
+  width?: number
+  height?: number
+  darkMode?: boolean
+  imageWidth?: number
+  TextComponent?: any
+  imageHeight?: number
+  placeholder?: string
+  ImageComponent?: any
+  spinnerType?: SpinnerType
+  spinnerSize?: number
+  spinnerColor?: string
+  searchEnabled?: boolean
+  disableAbsolute?: boolean
+  placeholderTextStyle?: any
+  animatedBorderRadius?: number
+  placeholderTextColor?: string
+  menuBarContainerWidth?: number
+  menuBarContainerHeight?: number
+  disableFilterAnimation?: boolean
+  value?: string
+  arrowImageStyle?: ImageStyle
+  menuItemTextStyle?: TextStyle
+  buttonContainerStyle?: ViewStyle
+  menuBarContainerStyle?: ViewStyle
+  data?: Array<ISingleSelectDataType>
+  initialValue?: ISingleSelectDataType
+  onTextChange?: (text: string) => void
+  onSelect: (selectedItem: ISingleSelectDataType) => void
 }
 
-const RNSingleSelect = (props: IProps) => {
-  let iconRef: any = undefined;
+export const RNSingleSelect = (props: IProps) => {
+  let iconRef: any
   const {
     data,
     width,
@@ -95,39 +95,33 @@ const RNSingleSelect = (props: IProps) => {
     spinnerColor,
     initialValue = null,
     searchEnabled = true,
-  } = props;
+  } = props
 
-  const [selectedItem, setSelectedItem] =
-    React.useState<ISingleSelectDataType | null>(initialValue);
-  const [placeholderText, setPlaceholderText] = React.useState<
-    string | undefined
-  >(placeholder);
-  const [menuToggled, setMenuToggled] = React.useState<boolean | null>(false);
-  const [dataBackup, setDataBackup] = React.useState<
-    Array<ISingleSelectDataType> | undefined
-  >(data);
-  const [dataSource, setDataSource] = React.useState<
-    Array<ISingleSelectDataType> | undefined
-  >(data);
-  const [borderRadiusAnimation, setBorderRadiusAnimation] =
-    React.useState<Animated.Value>(
-      new Animated.Value(animatedBorderRadius || 16),
-    );
-  const [menuBarYTranslateAnimation, setMenuBarYTranslateAnimation] =
-    React.useState<Animated.Value>(new Animated.Value(0));
-  const [theme, setTheme] = React.useState(DARK);
+  const [selectedItem, setSelectedItem] = React.useState<ISingleSelectDataType | null>(initialValue)
+  const [placeholderText, setPlaceholderText] = React.useState<string | undefined>(placeholder)
+  const [menuToggled, setMenuToggled] = React.useState<boolean | null>(false)
+  const [dataBackup, setDataBackup] = React.useState<Array<ISingleSelectDataType> | undefined>(data)
+  const [dataSource, setDataSource] = React.useState<Array<ISingleSelectDataType> | undefined>(data)
+  const [borderRadiusAnimation, setBorderRadiusAnimation] = React.useState<Animated.Value>(
+    new Animated.Value(animatedBorderRadius || 16),
+  )
+  const [
+    menuBarYTranslateAnimation,
+    setMenuBarYTranslateAnimation,
+  ] = React.useState<Animated.Value>(new Animated.Value(0))
+  const [theme, setTheme] = React.useState(DARK)
 
   React.useEffect(() => {
-    if (darkMode) setTheme(DARK);
-    else setTheme(LIGHT);
-  }, []);
+    if (darkMode) setTheme(DARK)
+    else setTheme(LIGHT)
+  }, [])
 
   React.useEffect(() => {
-    setDataSource(data);
-    setDataBackup(data);
-    setSelectedItem(initialValue);
-    setPlaceholderText(placeholder);
-  }, [data]);
+    setDataSource(data)
+    setDataBackup(data)
+    setSelectedItem(initialValue)
+    setPlaceholderText(placeholder)
+  }, [data])
 
   const animateBorderRadius = () => {
     Animated.timing(borderRadiusAnimation, {
@@ -135,8 +129,8 @@ const RNSingleSelect = (props: IProps) => {
       duration: 1250,
       easing: Easing.bounce,
       useNativeDriver: true,
-    }).start();
-  };
+    }).start()
+  }
 
   const animateSelectionBar = () => {
     Animated.timing(menuBarYTranslateAnimation, {
@@ -144,22 +138,22 @@ const RNSingleSelect = (props: IProps) => {
       duration: 250,
       easing: Easing.ease,
       useNativeDriver: true,
-    }).start();
-  };
+    }).start()
+  }
 
   const handleOnToggleMenuBar = (isMenuToggled?: boolean) => {
-    iconRef?.onPressAnimation();
-    animateBorderRadius();
-    animateSelectionBar();
-    setMenuToggled(isMenuToggled ? isMenuToggled : !menuToggled);
-  };
+    iconRef?.onPressAnimation()
+    animateBorderRadius()
+    animateSelectionBar()
+    setMenuToggled(isMenuToggled || !menuToggled)
+  }
 
   const handleOnSelectItem = (item: ISingleSelectDataType) => {
-    handleOnFilter("");
-    setSelectedItem(item);
-    handleOnToggleMenuBar();
-    onSelect && onSelect(item);
-  };
+    handleOnFilter("")
+    setSelectedItem(item)
+    handleOnToggleMenuBar()
+    onSelect && onSelect(item)
+  }
 
   const triggerFilterAnimation = () => {
     LayoutAnimation.configureNext({
@@ -174,21 +168,21 @@ const RNSingleSelect = (props: IProps) => {
         property: LayoutAnimation.Properties.opacity,
         springDamping: 1,
       },
-    });
-  };
+    })
+  }
 
   const handleOnFilter = (text: string) => {
-    let newData = dataBackup;
+    let newData = dataBackup
     newData = dataBackup?.filter((item) => {
-      const itemData = item.value.toLowerCase();
-      const textData = text.toLowerCase();
-      return itemData.indexOf(textData) > -1;
-    });
-    !disableFilterAnimation && triggerFilterAnimation();
-    setDataSource(newData);
-    setSelectedItem({ value: text });
-    setDataSource(newData);
-  };
+      const itemData = item.value.toLowerCase()
+      const textData = text.toLowerCase()
+      return itemData.indexOf(textData) > -1
+    })
+    !disableFilterAnimation && triggerFilterAnimation()
+    setDataSource(newData)
+    setSelectedItem({ ...selectedItem, value: text })
+    setDataSource(newData)
+  }
 
   /* -------------------------------------------------------------------------- */
   /*                               Render Methods                               */
@@ -200,24 +194,21 @@ const RNSingleSelect = (props: IProps) => {
       value={value}
       editable={searchEnabled}
       placeholderTextColor={
-        placeholderTextColor
-          ? placeholderTextColor
-          : selectedItem
-          ? ThemeColors[theme].textColor
-          : ThemeColors[theme].placeholderColor
+        placeholderTextColor ||
+        (selectedItem ? ThemeColors[theme].textColor : ThemeColors[theme].placeholderColor)
       }
       style={[_placeholderTextStyle(theme, selectedItem), placeholderTextStyle]}
       placeholder={placeholderText || "Select"}
       onFocus={() => handleOnToggleMenuBar(false)}
       onChangeText={(text: string) => {
-        if (text.length === 0) handleOnFilter("");
-        else handleOnFilter(text);
-        onTextChange && onTextChange(text);
+        if (text.length === 0) handleOnFilter("")
+        else handleOnFilter(text)
+        onTextChange && onTextChange(text)
       }}
     >
       <TextComponent>{selectedItem?.value}</TextComponent>
     </TextInput>
-  );
+  )
 
   const renderReadOnlyMode = () => (
     <Text
@@ -228,14 +219,14 @@ const RNSingleSelect = (props: IProps) => {
     >
       {selectedItem ? selectedItem?.value : placeholderText || "Select"}
     </Text>
-  );
+  )
 
   const renderSingleSelectButton = () => {
     return (
       <TouchableOpacity
         {...props}
         onPress={() => {
-          handleOnToggleMenuBar();
+          handleOnToggleMenuBar()
         }}
       >
         <Animated.View
@@ -258,19 +249,19 @@ const RNSingleSelect = (props: IProps) => {
           </View>
         </Animated.View>
       </TouchableOpacity>
-    );
-  };
+    )
+  }
 
   const renderMenuItem = (menuItem: any) => {
-    const { index } = menuItem;
-    const { id, value, imageSource } = menuItem.item;
-    const { data, imageWidth, imageHeight, menuItemTextStyle } = props;
+    const { index } = menuItem
+    const { id, value, imageSource } = menuItem.item
+    const { data, imageWidth, imageHeight, menuItemTextStyle } = props
     return (
       <TouchableHighlight
         key={id}
         style={_menuItemContainer(index, data)}
         onPress={() => {
-          handleOnSelectItem(menuItem.item);
+          handleOnSelectItem(menuItem.item)
         }}
       >
         <View style={styles.menuBarItemContainerGlue}>
@@ -286,8 +277,8 @@ const RNSingleSelect = (props: IProps) => {
           </TextComponent>
         </View>
       </TouchableHighlight>
-    );
-  };
+    )
+  }
 
   const renderSpinner = () => (
     <View style={styles.spinnerContainer}>
@@ -298,48 +289,42 @@ const RNSingleSelect = (props: IProps) => {
         isVisible={!(dataSource && dataSource.length > 0)}
       />
     </View>
-  );
+  )
 
   const renderList = () => (
-    <FlatList
-      style={styles.listStyle}
-      {...props}
-      data={dataSource}
-      renderItem={renderMenuItem}
-    />
-  );
+    <ScrollView style={styles.listStyle} {...props}>
+      {dataSource.map((item, index) => renderMenuItem({ item, index }))}
+    </ScrollView>
+  )
 
   const renderMenuBar = () => {
     const rotate = menuBarYTranslateAnimation.interpolate({
       inputRange: [0, 25, 50, 75, 100],
       outputRange: [0, 0.5, 0.75, 0.9, 1],
-    });
+    })
+    const display = disableAbsolute ? "flex" : menuToggled ? "flex" : "none"
     return (
       <Animated.View
         style={[
-          _menuBarContainer(
-            theme,
-            menuBarContainerHeight,
-            menuBarContainerWidth,
-          ),
+          _menuBarContainer(theme, menuBarContainerHeight, menuBarContainerWidth),
           {
             transform: [{ scaleY: rotate }],
-            display: disableAbsolute ? "flex" : menuToggled ? "flex" : "none",
+            display,
           },
           menuBarContainerStyle,
         ]}
       >
         {dataSource && dataSource.length > 0 ? renderList() : renderSpinner()}
       </Animated.View>
-    );
-  };
+    )
+  }
 
   return (
     <View>
       {renderSingleSelectButton()}
       {renderMenuBar()}
     </View>
-  );
-};
+  )
+}
 
-export default RNSingleSelect;
+export default RNSingleSelect
