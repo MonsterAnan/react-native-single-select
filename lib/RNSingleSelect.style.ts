@@ -18,11 +18,6 @@ export const _placeholderTextStyle = (
   width: "90%",
   fontSize: 16,
   fontWeight: "bold",
-  color: placeholderTextColor
-    ? placeholderTextColor
-    : selectedItem
-    ? ThemeColors[theme].textColor
-    : ThemeColors[theme].placeholderColor,
 });
 
 export const _menuItemContainer = (
@@ -48,8 +43,8 @@ export const _menuBarContainer = (
 
 export const _menuButtonContainer = (
   theme: string,
-  height: number = 50,
-  width: number = 250,
+  height = 50,
+  width = 250,
 ): ViewStyle => ({
   width,
   height,
@@ -60,8 +55,8 @@ export const _menuButtonContainer = (
 });
 
 export const _imageStyle = (
-  height: number = 25,
-  width: number = 25,
+  height = 25,
+  width = 25,
 ): ImageStyle => ({
   width,
   height,
@@ -74,28 +69,28 @@ export const _menuItemTextStyle = (theme: string): TextStyle => ({
 });
 
 export default StyleSheet.create<Style>({
+  arrowImageStyle: {
+    height: 20,
+    width: 20,
+  },
   buttonContainerGlue: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginLeft: 16,
     marginRight: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  arrowImageStyle: {
-    width: 20,
-    height: 20,
-  },
-  menuBarItemContainerGlue: {
-    flexDirection: "row",
-    alignItems: "center",
   },
   listStyle: {
-    marginTop: 3,
     marginBottom: 3,
+    marginTop: 3,
+  },
+  menuBarItemContainerGlue: {
+    alignItems: "center",
+    flexDirection: "row",
   },
   spinnerContainer: {
-    marginTop: 32,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 32,
   },
 });
